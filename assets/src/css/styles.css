@@ -1,0 +1,107 @@
+/* general */
+body{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* header */
+#header{
+    width: 100%;
+    background-color: #353b48;
+    line-height: 44px;
+    color: #f5f6fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+    margin: 0;
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+}
+
+/* nav */
+#nav{
+    background-color: #353b48;
+    position: fixed;
+    z-index: 1000;
+    height: calc(100% - 64px);
+    top: 64px;
+    left: 0px;
+    padding: 0 !important;
+}
+
+#nav-list{
+    margin: 0;
+    padding: 0;
+}
+
+#nav-list > li{
+    display: block;
+    line-height: 48px;
+    list-style: none;
+    padding: 0px 10px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+}
+
+#nav-list > li:hover{
+    background-color: #718093;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#nav-list > li > a:link, #nav-list > li > a:visited{
+    color: white;
+    font-size: 18px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+#nav-list > li.hasChild.open{
+    background-color: #2f3640;
+}
+
+#nav-list > li.hasChild.open:hover{
+    background-color: #718093;
+}
+
+#nav-list > li.hasChild > ul.navChild{
+    margin: 0px -10px;
+    padding: 0px;
+    background-color: #2f3640;
+}
+
+#nav-list > li.logout > a:link, #nav-list > li.logout > a:visited{
+    color: #e84118;
+}
+
+
+ul.navChild > li{
+    display: block;
+    line-height: 32px;
+    list-style: none;
+    padding: 0px 20px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+}
+
+ul.navChild > li:hover{
+    background-color: #718093;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+ul.navChild > li > a:link, ul.navChild > li > a:visited{
+    color: white;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
