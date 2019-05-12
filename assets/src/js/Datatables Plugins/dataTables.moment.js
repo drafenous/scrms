@@ -1,52 +1,56 @@
-(function (factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["jquery", "moment", "datatables.net"], factory);
-    } else {
-        factory(jQuery, moment);
+// UMD
+(function( factory ) {
+    "use strict";
+ 
+    if ( typeof define === 'function' && define.amd ) {
+        // AMD
+        define( ['jquery'], function ( $ ) {
+            return factory( $, window, document );
+        } );
     }
-}(function ($, moment) {
- 
-$.fn.dataTable.moment = function ( format, locale ) {
-    var types = $.fn.dataTable.ext.type;
- 
-    // Add type detection
-    types.detect.unshift( function ( d ) {
-        if ( d ) {
-            // Strip HTML tags and newline characters if possible
-            if ( d.replace ) {
-                d = d.replace(/(<.*?>)|(\r?\n|\r)/g, '');
+    else if ( typeof exports === 'object' ) {
+        // CommonJS
+        module.exports = function (root, $) {
+            if ( ! root ) {
+                root = window;
             }
  
-            // Strip out surrounding white space
-            d = $.trim( d );
-        }
- 
-        // Null and empty values are acceptable
-        if ( d === '' || d === null ) {
-            return 'moment-'+format;
-        }
- 
-        return moment( d, format, locale, true ).isValid() ?
-            'moment-'+format :
-            null;
-    } );
- 
-    // Add sorting method - use an integer for the sorting
-    types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
-        if ( d ) {
-            // Strip HTML tags and newline characters if possible
-            if ( d.replace ) {
-                d = d.replace(/(<.*?>)|(\r?\n|\r)/g, '');
+            if ( ! $ ) {
+                $ = typeof window !== 'undefined' ?
+                    require('jquery') :
+                    require('jquery')( root );
             }
  
-            // Strip out surrounding white space
-            d = $.trim( d );
-        }
-         
-        return !moment(d, format, locale, true).isValid() ?
-            Infinity :
-            parseInt( moment( d, format, locale, true ).format( 'x' ), 10 );
+            return factory( $, root, root.document );
+        };
+    }
+    else {
+        // Browser
+        factory( jQuery, window, document );
+    }
+}
+(function( $, window, document ) {
+ 
+ 
+$.fn.dataTable.render.moment = function ( from, to, locale ) {
+    // Argument shifting
+    if ( arguments.length === 1 ) {
+        locale = 'pt-BR';
+        to = from;
+        from = 'YYYY-MM-DD HH:mm:ss';
+    }
+    else if ( arguments.length === 2 ) {
+        locale = 'pt-BR';
+    }
+ 
+    return function ( d, type, row ) {
+        var m = window.moment( d, from, locale, true );
+ 
+        // Order and type get a number value from Moment, everything else
+        // sees the rendered value
+        return m.format( type === 'sort' || type === 'type' ? 'x' : to );
     };
 };
+ 
  
 }));

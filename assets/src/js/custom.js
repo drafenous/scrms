@@ -6,10 +6,32 @@ $(document).ready(function(){
         $(this).toggleClass('open');
         $(this).find('ul.navChild').toggleClass('d-none');
     });
-
-    // Datatables date-time moment
-    $.fn.dataTable.moment('DD/MM/YYYY - HH:mm')
 })
+
+// FORMATERS
+// PHONE
+PhonesMaskBehavior = function (val) {
+    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+    },
+    spOptions = {
+    onKeyPress: function(val, e, field, options) {
+        field.mask(PhonesMaskBehavior.apply({}, arguments), options);
+        }
+    };
+    
+    $('.phone').mask(PhonesMaskBehavior, spOptions);
+
+// NATIONAL REGISTER
+nationalRegisterMaskBehavior = function (val) {
+    return val.replace(/\D/g, '').length === 14 ? '00.000.000/0000-00' : '000.000.000-009999';
+    },
+    nationalRegisterOptions = {
+    onKeyPress: function(val, e, field, options) {
+        field.mask(nationalRegisterMaskBehavior.apply({}, arguments), options);
+        }
+    };
+    
+    $('.nationalRegister').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
 
 // DataTables
 $.extend( $.fn.dataTable.defaults, {
@@ -67,12 +89,18 @@ $.extend( $.fn.dataTable.defaults, {
         var api = this.api();
         tableId = api.table().node().id
 
-        $('#' + tableId).closest('.dataTable_element').find('.alert').removeClass('d-none').addClass('alert-info').html('<i class="fas fa-spinner fa-spin"></i> <strong>Aguarde!</strong> Carregando dados.');
+        $('.table').closest('.dataTable_element').find('.alert').removeClass('d-none').addClass('alert-info').html('<i class="fas fa-spinner fa-spin"></i> <strong>Aguarde!</strong> Carregando dados.');
     },
     drawCallback: function(settings){
         var api = this.api();
         tableId = api.table().node().id
         
-        $('#' + tableId).closest('.dataTable_element').find('.alert').addClass('d-none').removeClass('alert-info').html('');
+        $('.table').closest('.dataTable_element').find('.alert').addClass('d-none').removeClass('alert-info').html('');
+        $('thead th').removeClass('phone nationalRegister');
+        $('.nationalRegister').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
+        $('.phone').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
+
+        // popover
+        $('[data-toggle="popover"]').popover()
     }
 })

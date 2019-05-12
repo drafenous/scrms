@@ -5,7 +5,7 @@
         <li class="hasChild"><i class="fas fa-address-card"></i> Leads
             <ul class="navChild d-none">
                 <li><a href="<?= base_url('leads'); ?>"><i class="fas fa-list"></i> Listar Leads</a></li>
-                <li><a href="#"><i class="fas fa-plus-square"></i> Cadastrar Lead</a></li>
+                <li><a href="<?= base_url('leads/newLead'); ?>"><i class="fas fa-plus-square"></i> Cadastrar Lead</a></li>
             </ul>
         </li>
         <li class="hasChild"><i class="fas fa-handshake"></i> Clientes

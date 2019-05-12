@@ -44,6 +44,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <!-- JS -->
     <script src="<?= base_url('node_modules\jquery\dist\jquery.min.js'); ?>"></script>
+    <script src="<?= base_url('node_modules\form-serializer\dist\jquery.serialize-object.min.js'); ?>"></script>
     <script src="<?= base_url('node_modules\popper.js\dist\umd\popper.min.js'); ?>"></script>
     <script src="<?= base_url('node_modules\bootstrap\dist\js\bootstrap.min.js'); ?>"></script>
     <script src="<?= base_url('node_modules\@fortawesome\fontawesome-free\js\all.min.js'); ?>"></script>
