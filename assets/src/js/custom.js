@@ -13,13 +13,13 @@ $(document).ready(function(){
 PhonesMaskBehavior = function (val) {
     return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
     },
-    spOptions = {
+    phonesOptions = {
     onKeyPress: function(val, e, field, options) {
         field.mask(PhonesMaskBehavior.apply({}, arguments), options);
         }
     };
     
-    $('.phone').mask(PhonesMaskBehavior, spOptions);
+    $('.phone').mask(PhonesMaskBehavior, phonesOptions);
 
 // NATIONAL REGISTER
 nationalRegisterMaskBehavior = function (val) {
@@ -33,6 +33,9 @@ nationalRegisterMaskBehavior = function (val) {
     
     $('.nationalRegister').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
 
+// ZIPCODE
+    $('.zipcode').mask('00000-000');
+
 // DataTables
 $.extend( $.fn.dataTable.defaults, {
     deferRender: true,
@@ -42,11 +45,17 @@ $.extend( $.fn.dataTable.defaults, {
          "<'row'<'col-sm-12'tr>>" +
          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
     buttons: [
-        'pdfHtml5', 
-        'excelHtml5', 
+        {
+            extend: 'pdfHtml5',
+            text: '<i class="fas fa-file-pdf"></i> PDF'
+        },
+        {
+            extend: 'excelHtml5',
+            text: '<i class="fas fa-file-excel"></i> Excel'
+        },
         'pageLength',
         {
-        text: 'Recarregar',
+        text: '<i class="fas fa-sync-alt"></i> Recarregar',
         action: function ( e, dt, node, config ) {
             dt.ajax.reload(null, false);
             }
@@ -80,8 +89,8 @@ $.extend( $.fn.dataTable.defaults, {
         },
         buttons: {
             pageLength: {
-                _: "Exibindo %d resultados",
-                '-1': "Exibindo todos os resultados"
+                _: "<i class='fas fa-table'></i> Exibindo %d resultados",
+                '-1': "<i class='fas fa-table'></i> Exibindo todos os resultados"
             }
         }
     },

@@ -25,9 +25,9 @@
             </div>
 
             <div class="form-group col-md-4 d-none invisible">
-                <label>Nome Fantasia (Opcional)</label>
+                <label>Nome Fantasia</label>
                 <input type="text" class="form-control" name="fantasyName" id="fantasyName" aria-describedby="fantasyNameHelp" placeholder="Nome Fantasia" autocomplete="off">
-                <small id="fantasyNameHelp" class="form-text text-muted">É um nome representativo da Empresa.</small>
+                <small id="fantasyNameHelp" class="form-text text-muted">É um nome representativo da Empresa, Campo opcional.</small>
             </div>
         </div>
 
@@ -59,13 +59,13 @@
                     </select>
                 </div>
 
-                <div class="form-group col-md-2">
+                <div class="form-group col-6 col-md-2">
                     <label for="responsiblePhone1">Telefone Primário</label>
                     <input type="text" class="form-control phone" id="responsiblePhone1" name="responsibles[][phones]" aria-describedby="responsiblePhone1Help" placeholder="Telefone Fixo ou Celular" autocomplete="off" required>
                     <small id="responsiblePhone1Help" class="form-text text-muted">Necessário informar o DDD.</small>
                 </div>
 
-                <div class="form-group col-md-2">
+                <div class="form-group col-6 col-md-2">
                     <label for="responsiblePhone2">Telefone Secundário</label>
                     <input type="text" class="form-control phone" id="responsiblePhone2" name="responsibles[][phones]" aria-describedby="responsiblePhone2Help" placeholder="Telefone Fixo ou Celular" autocomplete="off" required>
                     <small id="responsiblePhone2Help" class="form-text text-muted">Necessário informar o DDD.</small>
@@ -77,6 +77,67 @@
             <div class="col-md-12">
                 <button type="button" id="addContact" class="col-12 col-md-auto btn btn-primary"><i class="fas fa-plus-square"></i> Adicionar Contato</button>&nbsp;
                 <button type="button" id="removeContact" class="col-12 col-md-auto btn btn-danger d-none invisible"><i class="fas fa-minus-square"></i> Remover Contato</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Endereço</h4>
+            </div>
+        </div>
+
+        <div class="row" id="address">
+            <div class="col-md-12">
+                <div id="zipAlert" class="alert d-none" role="alert">
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="addressZipCode">CEP</label>
+                <input type="text" class="form-control zipcode" id="addressZipCode" name="address[ZipCode]" aria-describedby="zipCodeHelp" placeholder="Digite o CEP" autocomplete="off" required>
+                <small id="zipCodeHelp" class="form-text text-muted">Ao digitar o CEP os demais campos serão preenchindos automaticamente.</small>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="addressStreet">Logradouro</label>
+                <input type="text" class="form-control" id="addressStreet" name="address[Street]" aria-describedby="streetHelp" placeholder="Digite o Logradouro" autocomplete="off" required disabled>
+                <small id="streetHelp" class="form-text text-muted">Logradouro pode ser a Rua, Estrada, Avenida e etc.</small>
+            </div>
+
+            <div class="form-group col-6 col-md-4">
+                <label for="addressNeighborhood">Bairro</label>
+                <input type="text" class="form-control" id="addressNeighborhood" name="address[Neighborhood]" placeholder="Digite o Bairro" autocomplete="off" required disabled>
+            </div>
+
+            <div class="form-group col-6 col-md-4">
+                <label for="addressExtra">Complemento</label>
+                <input type="text" class="form-control" id="addressExtra" name="address[Extra]" aria-describedby="extraHelp" placeholder="Digite o Complemento" autocomplete="off" disabled>
+                <small id="extraHelp" class="form-text text-muted">Campo opcional</small>
+
+            </div>
+
+
+            <div class="form-group col-6 col-md-2">
+                <label for="addressUF">UF</label>
+                <select class="form-control" id="addressUF" name="address[UF]" autocomplete="off" required disabled>
+                    <option value="" selected disabled>Selecione o UF</option>
+                </select>
+            </div>
+
+            <div class="form-group col-6 col-md-2">
+                <label for="addressLocation">Localidade</label>
+                <select class="form-control" id="addressLocation" name="address[Location]" aria-describedby="locationHelp" autocomplete="off" required disabled>
+                    <option value="" selected disabled>Selecione o municiopio</option>
+                </select>
+                <small id="locationHelp" class="form-text text-muted">Localidade pode ser a Cidade, Capital, Região e etc.</small>
+            </div>
+
+
+
+            <div class="form-group col-md-4">
+                <label for="addressNumber">Número</label>
+                <input type="text" class="form-control" id="addressNumber" name="address[Number]" placeholder="Digite o Número" autocomplete="off" disabled>
             </div>
         </div>
 
@@ -115,6 +176,55 @@
 <script>
     $(document).ready(function() {
 
+        // lista de UF
+        $.ajax({
+            url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+            dataType: 'json',
+            type: 'GET',
+            success: (response) => {
+                localStorage.setItem('listaUF', JSON.stringify(response));
+
+                $(response).each(function(index, item){
+                    var option = $(`<option value="${item.sigla}">${item.sigla}</option>`);
+                    $('#addressUF').append(option);
+                })
+            },
+            error: (response) => {
+                console.error('[UFList]:', response)
+            }
+        })
+
+        $('#addressUF').on('change', function(event, string){
+            console.log(string);
+            $('#addressLocation').attr('disabled', true);
+
+            var uf = $(this).val();
+            var locationList = localStorage.getItem('listaUF');
+            locationList = JSON.parse(locationList);
+
+            $.each(locationList, function(index, item){
+                if(item.sigla == uf){
+                    $.ajax({
+                        url: `http://servicodados.ibge.gov.br/api/v1/localidades/estados/${item.id}/municipios`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: (response) => {
+                            $('#addressLocation').find('option').not(':first').remove();
+                            $.each(response, function(index, item){
+                                var option = $(`<option value="${item.nome}">${item.nome}</option>`)
+                                $('#addressLocation').append(option);
+                                $('#addressLocation').attr('disabled', false);
+                            })
+                            $('#addressLocation').val(string);
+                        },
+                        error: (response) => {
+                            console.error('[addressUF]:', response);
+                        }
+                    })
+                }
+            })
+        })
+
         // show/hide fantasy name
         $('#nationalRegister').on('keyup', function() {
             ($(this).val().length > 14) ? $('#fantasyName').closest('.form-group').removeClass('d-none invisible'): $('#fantasyName').closest('.form-group').addClass('d-none invisible');
@@ -123,7 +233,7 @@
         // buttons actions
         $('#addContact').on('click', function() {
             addContact();
-            $('.phone').mask(SPMaskBehavior, spOptions);
+            $('.phone').mask(PhonesMaskBehavior, phonesOptions);
         });
 
         $('#removeContact').on('click', function() {
@@ -145,8 +255,7 @@
             var data = $(this).serializeArray();
 
             data.push({name: 'createdDate', value: window['globals'].now})
-            data.push({name: 'lastSchedule', value: null})
-            data.push({name: 'lastBuy', value: null})
+            data.push({name: 'lastSchedule', value: window['globals'].now})
 
             console.log(data);
             
@@ -159,9 +268,43 @@
                     console.log(response);
                 },
                 error: (response) => {
-                    console.error(response);
+                    console.error('[submitLead]:', response);
                 }
             })
+        })
+
+        //search zipcode
+        $('.zipcode').on('input', function(){
+            if($(this).val().length == 9){
+                var zipcode = $(this).val()
+                $.ajax({
+                    url: `https://viacep.com.br/ws/${zipcode}/json/`,
+                    dataType: 'json',
+                    success: (response) => {
+                        console.log(response);
+                        if(response.erro == true){
+                            console.warn('[zipCode]: Cep inválido ou não localizado. Você pode inserir os dados manualmente');
+                            $('#address').find(':input').attr('disabled', false);
+                            return $('#zipAlert').html(`<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - CEP não localizado ou inválido. Você pode inserir os dados manualmente.`).removeClass('d-none alert-*').addClass('alert-danger');
+                        }
+
+                        $('#addressStreet').val(response.logradouro).attr('disabled', false);
+                        $('#addressNeighborhood').val(response.bairro).attr('disabled', false);
+                        $('#addressExtra').val(response.complemento).attr('disabled', false);
+                        $('#addressUF').val(response.uf).attr('disabled', false).trigger('change', response.localidade);
+                        $('#addressNumber').val("").attr('disabled', false);
+
+                        return $('#zipAlert').html(`<i class="fa fa-check"></i> <strong>Feito!</strong> - CEP localizado com sucesso.`).removeClass('d-none alert-*').addClass('alert-success');
+                    },
+                    error: (response) => {
+                        return $('#zipAlert').html(`<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - Falha ao contatar o site do ViaCEP.`).removeClass('d-none alert-*').addClass('alert-danger');
+                        return console.error('[zipCode]:', response);
+                    }
+                })
+            }
+            if($(this).val().length < 9){
+                $('#zipAlert').html('').removeClass('alert-*').addClass('d-none');
+            }
         })
     })
 

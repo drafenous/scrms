@@ -56,8 +56,8 @@
 			<div class="modal-body">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Fechar</button>
+				<button type="button" class="btn btn-primary"><i class="fas fa-pen-square"></i> Editar</button>
 			</div>
 		</div>
 	</div>
@@ -86,35 +86,24 @@
 				{
 					data: 'createdDate',
 					title: 'Data de Registro',
-					render: function(data){
-						if(!data){
-							return 'Não Informado';
-						}else{
-							return $.fn.dataTable.render.moment('YYYY-MM-DD HH:mm:ss', 'DD/MM/YYYY - HH:mm:ss');
-						}
-					}
+					render: $.fn.dataTable.render.moment('DD/MM/YYYY - HH:mm:ss')
 				},
 				{
 					data: 'lastSchedule',
-					title: 'Último Agendamento',
-					render: function(data){
-						if(!data){
-							return 'Não Informado';
-						}else{
-							return $.fn.dataTable.render.moment('YYYY-MM-DD HH:mm:ss', 'DD/MM/YYYY - HH:mm:ss');
-						}
-					}
+					title: 'Última Interação',
+					render: $.fn.dataTable.render.moment('DD/MM/YYYY - HH:mm:ss')
 				},
 				{
 					data: null,
 					render: function(data) {
-						var html = `<button type="button" class="btn btn-sm btn-primary viewMore" role="button" data-toggle="popover" data-trigger="hover" data-content="Ver mais"><i class="fas fa-search-plus"></i></button> 
+						var html = `
+							<button type="button" class="btn btn-sm btn-primary viewMore" role="button" data-toggle="popover" data-trigger="hover" data-content="Ver mais"><i class="fas fa-search-plus"></i></button> 
 							<button type="button" class="btn btn-sm btn-danger deleteLead" role="button" data-toggle="popover" data-trigger="hover" data-content="Excluir Lead" onclick="deleteLead(${data.id})"><i class="fas fa-trash-alt"></i></button>`
 						return html;
 					},
 					title: 'Opções'
 				}
-			],
+			]
 		});
 
 		$('#dtLeads').on('click', '.viewMore', function(event) {
@@ -132,7 +121,7 @@
 		if (data == null) return false;
 		console.log(data);
 		var table = $(`
-		<table id="viewMoreTable" class="table display table-hover table-stiped">
+		<table id="viewMoreTable" class="table display table-hover table-striped">
 			<thead>
 				<tr>
 					<th>Informação</th>
@@ -157,7 +146,7 @@
 					<td>${data.createdDate}</td>
 				</tr>
 				<tr>
-					<td>Último agendamento</td>
+					<td>Último Tarefa</td>
 					<td>${data.lastSchedule}</td>
 				</tr>
 			</tbody>
