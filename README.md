@@ -10,10 +10,10 @@ Its an free/open-source CRM System, based in:
 - And others open-source libraries.
 
 # Install instructions:
-* Run cmd: npm install
-* Run cmd: json-server --watch ./assets/src/json/leads-list.json
-* Open in browser your installation path.
-* Enjoy this sample system. :)
+1. Run cmd: npm install
+2. Run cmd: json-server --watch ./assets/src/json/leads-list.json
+3. Open in browser your installation path.
+4. Enjoy this sample system. :)
 
 This CRM istill in work in progress, and the development sessions you can watch in my Twitch channel:
 http://www.twitch.tv/drafenous
