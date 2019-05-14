@@ -106,3 +106,8 @@ ul.navChild > li > a:link, ul.navChild > li > a:visited{
     display: block;
     text-decoration: none;
 }
+
+/* tables */
+td{
+    vertical-align: middle !important;
+}

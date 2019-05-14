@@ -51,11 +51,6 @@
                     <label for="responsibleDivision">Divisão do Responsável</label>
                     <select class="form-control" id="responsibleDivision" name="responsibles[][division]" required>
                         <option value="" selected disabled>Selecione</option>
-                        <option value="0">Compras</option>
-                        <option value="1">Vendas</option>
-                        <option value="2">Negociador/Procurador</option>
-                        <option value="3">Outros</option>
-                        <option value="4">Não informado</option>
                     </select>
                 </div>
 
@@ -144,6 +139,11 @@
         <hr>
 
         <div class="row">
+            <div class="col-md-12">
+                <div id="alertSubmit" class="d-none alert" role="alert">
+                </div>
+            </div>
+
             <div class="col-md-12 text-right">
                 <button type="submit" id="submitNewLead" class="col-12 col-md-auto btn btn-success"><i class="fas fa-check-square"></i> Cadastrar Lead</button>&nbsp;
                 <button type="button" id="resetFields" class="col-12 col-md-auto btn btn-danger"><i class="fas fa-recycle"></i> Limpar Campos</button>
@@ -175,15 +175,43 @@
 
 <script>
     $(document).ready(function() {
+        // leads responsibles list
+        $.ajax({
+            url: "http://localhost:3000/responsiblesTypes",
+            type: 'GET',
+            dataType: 'json',
+            success: (response) => {
+                $.each(response, function(index, item){
+                    var option = $(`<option value="${item.id}">${item.string}</option>`);
+                    $('#responsibleDivision').append(option);
+                })
+            },
+            error: (response) => {
+                console.error('[leadsResponsiblesList]:', response)
+            }
+        });
 
-        // lista de UF
+        // UF List
         $.ajax({
             url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
             dataType: 'json',
             type: 'GET',
             success: (response) => {
+                // order UF.
+                response.sort(function(a, b){
+                    if ( a.sigla < b.sigla ){
+                        return -1;
+                    }
+                    if ( a.sigla > b.sigla ){
+                        return 1;
+                    }
+                    return 0;
+                })
+
+                // Save to localStorage
                 localStorage.setItem('listaUF', JSON.stringify(response));
 
+                // build options list
                 $(response).each(function(index, item){
                     var option = $(`<option value="${item.sigla}">${item.sigla}</option>`);
                     $('#addressUF').append(option);
@@ -192,10 +220,10 @@
             error: (response) => {
                 console.error('[UFList]:', response)
             }
-        })
+        });
 
         $('#addressUF').on('change', function(event, string){
-            console.log(string);
+            // set disabled to load.
             $('#addressLocation').attr('disabled', true);
 
             var uf = $(this).val();
@@ -213,9 +241,9 @@
                             $.each(response, function(index, item){
                                 var option = $(`<option value="${item.nome}">${item.nome}</option>`)
                                 $('#addressLocation').append(option);
-                                $('#addressLocation').attr('disabled', false);
                             })
                             $('#addressLocation').val(string);
+                            $('#addressLocation').attr('disabled', false);
                         },
                         error: (response) => {
                             console.error('[addressUF]:', response);
@@ -223,7 +251,7 @@
                     })
                 }
             })
-        })
+        });
 
         // show/hide fantasy name
         $('#nationalRegister').on('keyup', function() {
@@ -265,10 +293,17 @@
                 dataType: 'json',
                 data: data,
                 success: (response) => {
-                    console.log(response);
+                    if(!response){
+                        var html = '<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - Verifique os dados de inseridos.';
+                        return $('#alertSubmit').removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-danger').html(html);
+                    }
+                    var html = '<i class="fa fa-check"></i> <strong>Feito!</strong> - Lead cadastrado com sucesso.';
+                    return $('#alertSubmit').removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-success').html(html);
                 },
                 error: (response) => {
-                    console.error('[submitLead]:', response);
+                    var html = '<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - Houve uma falha na comunicação com o servidor, tente novamente.';
+                    $('#alertSubmit').removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-danger').html(html);
+                    return console.error('[submitLead]:', response);
                 }
             })
         })
@@ -281,11 +316,10 @@
                     url: `https://viacep.com.br/ws/${zipcode}/json/`,
                     dataType: 'json',
                     success: (response) => {
-                        console.log(response);
                         if(response.erro == true){
                             console.warn('[zipCode]: Cep inválido ou não localizado. Você pode inserir os dados manualmente');
                             $('#address').find(':input').attr('disabled', false);
-                            return $('#zipAlert').html(`<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - CEP não localizado ou inválido. Você pode inserir os dados manualmente.`).removeClass('d-none alert-*').addClass('alert-danger');
+                            return $('#zipAlert').html(`<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - CEP não localizado ou inválido. Você pode inserir os dados manualmente.`).removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-warning');
                         }
 
                         $('#addressStreet').val(response.logradouro).attr('disabled', false);
@@ -294,10 +328,10 @@
                         $('#addressUF').val(response.uf).attr('disabled', false).trigger('change', response.localidade);
                         $('#addressNumber').val("").attr('disabled', false);
 
-                        return $('#zipAlert').html(`<i class="fa fa-check"></i> <strong>Feito!</strong> - CEP localizado com sucesso.`).removeClass('d-none alert-*').addClass('alert-success');
+                        return $('#zipAlert').html(`<i class="fa fa-check"></i> <strong>Feito!</strong> - CEP localizado com sucesso.`).removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-success');
                     },
                     error: (response) => {
-                        return $('#zipAlert').html(`<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - Falha ao contatar o site do ViaCEP.`).removeClass('d-none alert-*').addClass('alert-danger');
+                        $('#zipAlert').html(`<i class="fa fa-exclamation-triangle"></i> <strong>Erro!</strong> - Falha ao contatar o site do ViaCEP.`).removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-danger');
                         return console.error('[zipCode]:', response);
                     }
                 })

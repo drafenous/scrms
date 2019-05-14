@@ -2,7 +2,7 @@
   "leadsList": [
     {
       "nationalRegister": "012.345.678-90",
-      "name": "Rodrigo Roberto de Almeida",
+      "name": "Rodrigo R. Almeida",
       "fantasyName": "",
       "responsibles[][name]": "Rodrigo",
       "responsibles[][division]": "0",
@@ -16,10 +16,74 @@
       "address[Extra]": "de 502 ao fim - lado par",
       "address[UF]": "SP",
       "address[Location]": "São Paulo",
-      "address[Number]": "0",
-      "createdDate": "2019-05-12 19:12:09",
-      "lastSchedule": "2019-05-12 19:12:09",
-      "id": 0
+      "address[Number]": "1",
+      "createdDate": "2019-05-13 22:14:23",
+      "lastSchedule": "2019-05-13 22:14:23",
+      "id": 1
+    },
+    {
+      "nationalRegister": "01.234.567/8901-23",
+      "name": "Tester Business Center",
+      "fantasyName": "",
+      "responsibles[][name]": "Tester",
+      "responsibles[][division]": "0",
+      "responsibles[][phones]": [
+        "(01) 2345-6789",
+        "(01) 23456-7890"
+      ],
+      "address[ZipCode]": "01234-000",
+      "address[Street]": "Avenida Pacaembu",
+      "address[Neighborhood]": "Pacaembu",
+      "address[Extra]": "de 502 ao fim - lado par",
+      "address[UF]": "SP",
+      "address[Location]": "São Paulo",
+      "address[Number]": "02",
+      "createdDate": "2019-05-13 22:55:12",
+      "lastSchedule": "2019-05-13 22:55:12",
+      "id": 2
+    },
+    {
+      "nationalRegister": "012.345.678-90",
+      "name": "Capnemobr1",
+      "fantasyName": "",
+      "responsibles[][name]": "Capnemobr1",
+      "responsibles[][division]": "0",
+      "responsibles[][phones]": [
+        "(01) 2345-6789",
+        "(01) 23456-7890"
+      ],
+      "address[ZipCode]": "01234-000",
+      "address[Street]": "Avenida Pacaembu",
+      "address[Neighborhood]": "Pacaembu",
+      "address[Extra]": "de 502 ao fim - lado par",
+      "address[UF]": "SP",
+      "address[Location]": "São Paulo",
+      "address[Number]": "04",
+      "createdDate": "2019-05-13 22:58:17",
+      "lastSchedule": "2019-05-13 22:58:17",
+      "id": 3
+    }
+  ],
+  "responsiblesTypes": [
+    {
+      "id": 0,
+      "string": "Compras"
+    },
+    {
+      "id": 1,
+      "string": "Vendas"
+    },
+    {
+      "id": 2,
+      "string": "Negociador/Procurador"
+    },
+    {
+      "id": 3,
+      "string": "Outros"
+    },
+    {
+      "id": 4,
+      "string": "Não Informado"
     }
   ]
 }
