@@ -41,27 +41,6 @@
       "createdDate": "2019-05-13 22:55:12",
       "lastSchedule": "2019-05-13 22:55:12",
       "id": 2
-    },
-    {
-      "nationalRegister": "012.345.678-90",
-      "name": "Capnemobr1",
-      "fantasyName": "",
-      "responsibles[][name]": "Capnemobr1",
-      "responsibles[][division]": "0",
-      "responsibles[][phones]": [
-        "(01) 2345-6789",
-        "(01) 23456-7890"
-      ],
-      "address[ZipCode]": "01234-000",
-      "address[Street]": "Avenida Pacaembu",
-      "address[Neighborhood]": "Pacaembu",
-      "address[Extra]": "de 502 ao fim - lado par",
-      "address[UF]": "SP",
-      "address[Location]": "São Paulo",
-      "address[Number]": "04",
-      "createdDate": "2019-05-13 22:58:17",
-      "lastSchedule": "2019-05-13 22:58:17",
-      "id": 3
     }
   ],
   "responsiblesTypes": [
@@ -84,6 +63,74 @@
     {
       "id": 4,
       "string": "Não Informado"
+    }
+  ],
+  "products": [
+    {
+      "id": 2,
+      "name": "Produto 2",
+      "productType": 2,
+      "stock": {
+        "avaiable": 1,
+        "total": 100
+      }
+    },
+    {
+      "id": 3,
+      "name": "Produto 3",
+      "productType": 3,
+      "stock": "infinity"
+    },
+    {
+      "id": 4,
+      "name": "Produto 4",
+      "productType": 0,
+      "stock": {
+        "avaiable": 25,
+        "total": 200
+      }
+    },
+    {
+      "id": 5,
+      "name": "Produto 5",
+      "productType": 1,
+      "stock": {
+        "avaiable": 75,
+        "total": 200
+      }
+    },
+    {
+      "id": 6,
+      "name": "Produto 6",
+      "productType": 2,
+      "stock": {
+        "avaiable": 99,
+        "total": 200
+      }
+    },
+    {
+      "id": 7,
+      "name": "Produto 7",
+      "productType": 3,
+      "stock": "infinity"
+    }
+  ],
+  "productTypes": [
+    {
+      "id": 0,
+      "string": "Produto Físico"
+    },
+    {
+      "id": 1,
+      "string": "Produto Virtual"
+    },
+    {
+      "id": 2,
+      "string": "Serviço Único"
+    },
+    {
+      "id": 3,
+      "string": "Serviço de Faturamento Constante"
     }
   ]
 }

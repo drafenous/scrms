@@ -56,15 +56,18 @@ $.extend( $.fn.dataTable.defaults, {
     buttons: [
         {
             extend: 'pdfHtml5',
-            text: '<i class="fas fa-file-pdf"></i> PDF'
+            text: '<i class="fas fa-file-pdf"></i> <span class="d-none d-md-inline">PDF</span>',
+            customize: function (doc) {
+                doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+            }
         },
         {
             extend: 'excelHtml5',
-            text: '<i class="fas fa-file-excel"></i> Excel'
+            text: '<i class="fas fa-file-excel"></i> <span class="d-none d-md-inline">Excel</span>'
         },
         'pageLength',
         {
-        text: '<i class="fas fa-sync-alt"></i> Recarregar',
+        text: '<i class="fas fa-sync-alt"></i> <span class="d-none d-md-inline">Recarregar</span>',
         action: function ( e, dt, node, config ) {
             dt.ajax.reload(null, false);
             }
@@ -105,20 +108,26 @@ $.extend( $.fn.dataTable.defaults, {
     },
     preDrawCallback: function(settings){
         var api = this.api();
-        tableId = api.table().node().id
+        var tableId = api.table().node().id
 
-        $('.table').closest('.dataTable_element').find('.alert').removeClass('d-none').addClass('alert-info').html('<i class="fas fa-spinner fa-spin"></i> <strong>Aguarde!</strong> Carregando dados.');
+        $('#'+tableId).find('tfoot').html($('#'+tableId).find('thead').clone());
+
+        return $('.table').closest('.dataTable_element').find('.alert').removeClass('d-none').addClass('alert-info').html('<i class="fas fa-spinner fa-spin"></i> <strong>Aguarde!</strong> Carregando dados.');
     },
     drawCallback: function(settings){
         var api = this.api();
-        tableId = api.table().node().id
+        var tableId = api.table().node().id
         
-        $('.table').closest('.dataTable_element').find('.alert').addClass('d-none').removeClass('alert-info').html('');
-        $('thead th').removeClass('phone nationalRegister');
-        $('.nationalRegister').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
-        $('.phone').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
+        $('#' + tableId).closest('.dataTable_element').find('.alert').addClass('d-none').removeClass('alert-info').html('');
+        $('#' + tableId + ' thead th').removeClass('phone nationalRegister text-left text-right text-center').addClass('text-center');
+        $('#' + tableId + ' .nationalRegister').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
+        $('#' + tableId + ' .phone').mask(nationalRegisterMaskBehavior, nationalRegisterOptions);
 
         // popover
-        $('[data-toggle="popover"]').popover()
+        $('#' + tableId + ' [data-toggle="popover"]').popover()
+    },
+    initComplete: function () {
+        var api = this.api();
+        var tableId = api.table().node().id
     }
 })

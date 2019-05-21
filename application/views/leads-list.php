@@ -227,7 +227,7 @@
 
 	function deleteLead(id = null) {
 		if (id == null) {
-			console.error('[deleteLead]: invalid ID');
+			console.error('[deleteLead]: invalid ID', id);
 			return false;
 		}
 
@@ -238,15 +238,12 @@
 				url: 'http://localhost:3000/leadsList/' + id,
 				type: 'DELETE',
 				dataType: 'json',
-				data: {
-					id: id
-				},
 				success: (response) => {
 					dtLeads.ajax.reload();
 					$('#confirmationModal').modal('hide');
 				},
 				error: (response) => {
-					console.error(response);
+					console.error('[deleteLead]:', response);
 				}
 			})
 		})

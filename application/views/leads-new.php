@@ -163,7 +163,7 @@
             </div>
             <div class="modal-body">
                 <h5>Você tem certeza?</h5>
-                <p>Todos os campos serão apagados e a operação <u>irreversível</u>.</p>
+                <p>Todos os campos serão apagados e a operação é <u>irreversível</u>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" id="confirmationNo" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Cancelar</button>

@@ -11,7 +11,7 @@ Its an free/open-source CRM System, based in:
 
 # Install instructions:
 1. Run cmd: npm install
-2. Run cmd: json-server --watch ./assets/src/json/leads-list.json
+2. Run cmd: json-server --watch ./assets/src/json/db.json
 3. Open in browser your installation path.
 4. Enjoy this sample system. :)
 

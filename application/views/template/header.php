@@ -54,7 +54,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </head>
 
 <body>
-    <div id="header">
-        SCRMS - Sample CRM System.
+    <div id="header" class="text-center">
+        <img src="<?= base_url('assets\images\logo-horizontal-transparent-white.png'); ?>" title="Logo: SCRMS - Sample CRM System" alt="Logo: SCRMS - Sample CRM System" height="44px">
     </div>
     <div class="row">
